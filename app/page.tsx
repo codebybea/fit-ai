@@ -83,7 +83,13 @@ export default async function Home() {
         {todayWorkoutDay && <WorkoutDayCard workoutDay={todayWorkoutDay} />}
       </div>
 
-      <NavigationBar />
+      <NavigationBar
+        calendarHref={
+          todayWorkoutDay
+            ? `/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`
+            : undefined
+        }
+      />
     </div>
   );
 }

@@ -11,21 +11,28 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const NAV_ITEMS = [
-  { href: "/", icon: House, label: "Início" },
-  { href: "#", icon: Calendar, label: "Calendário" },
-  { href: "#", icon: Sparkles, label: "IA", highlighted: true },
-  { href: "#", icon: ChartNoAxesColumn, label: "Estatísticas" },
-  { href: "#", icon: UserRound, label: "Perfil" },
-];
+interface NavigationBarProps {
+  calendarHref?: string;
+}
 
-export function NavigationBar() {
+export function NavigationBar({ calendarHref }: NavigationBarProps) {
   const pathname = usePathname();
+
+  const navItems = [
+    { href: "/", icon: House, label: "Início" },
+    { href: calendarHref ?? "#", icon: Calendar, label: "Calendário" },
+    { href: "#", icon: Sparkles, label: "IA", highlighted: true },
+    { href: "#", icon: ChartNoAxesColumn, label: "Estatísticas" },
+    { href: "#", icon: UserRound, label: "Perfil" },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 rounded-t-[20px] border border-border bg-background px-6 py-4">
-      {NAV_ITEMS.map((item) => {
-        const isActive = item.href !== "#" && pathname === item.href;
+      {navItems.map((item) => {
+        const isActive =
+          item.label === "Calendário"
+            ? pathname.startsWith("/workout-plans/")
+            : item.href !== "#" && pathname === item.href;
 
         if (item.highlighted) {
           return (

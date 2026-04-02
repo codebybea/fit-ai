@@ -26,7 +26,7 @@ export function WorkoutDayCard({ workoutDay }: WorkoutDayCardProps) {
   const dayLabel = WEEK_DAY_LABELS[workoutDay.weekDay] ?? workoutDay.weekDay;
 
   return (
-    <Link href="#">
+    <Link href={`/workout-plans/${workoutDay.workoutPlanId}/days/${workoutDay.id}`}>
       <div className="relative flex h-[200px] flex-col items-start justify-between overflow-hidden rounded-xl p-5">
         {workoutDay.coverImageUrl && (
           <Image
