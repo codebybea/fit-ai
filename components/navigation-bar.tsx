@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface NavigationBarProps {
-  calendarHref?: string;
+  calendarHref?: string | null;
 }
 
 export function NavigationBar({ calendarHref }: NavigationBarProps) {

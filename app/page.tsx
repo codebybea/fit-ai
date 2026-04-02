@@ -85,9 +85,9 @@ export default async function Home() {
 
       <NavigationBar
         calendarHref={
-          todayWorkoutDay
-            ? `/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`
-            : undefined
+          homeData.status === 200 && homeData.data.activeWorkoutPlanId
+            ? `/workout-plans/${homeData.data.activeWorkoutPlanId}`
+            : null
         }
       />
     </div>

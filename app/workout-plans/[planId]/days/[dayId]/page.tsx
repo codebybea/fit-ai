@@ -52,7 +52,7 @@ export default async function WorkoutDayPage({
   );
   const hasInProgressSession = !!inProgressSession;
 
-  const title = hasInProgressSession ? "Treino de Hoje" : dayLabel;
+  const title = "Treino de Hoje";
   const calendarHref = `/workout-plans/${workoutPlanId}/days/${workoutDayId}`;
 
   return (
