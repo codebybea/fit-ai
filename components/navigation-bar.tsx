@@ -22,8 +22,8 @@ export function NavigationBar({ calendarHref }: NavigationBarProps) {
     { href: "/", icon: House, label: "Início" },
     { href: calendarHref ?? "#", icon: Calendar, label: "Calendário" },
     { href: "#", icon: Sparkles, label: "IA", highlighted: true },
-    { href: "#", icon: ChartNoAxesColumn, label: "Estatísticas" },
-    { href: "#", icon: UserRound, label: "Perfil" },
+    { href: "/stats", icon: ChartNoAxesColumn, label: "Estatísticas" },
+    { href: "/profile", icon: UserRound, label: "Perfil" },
   ];
 
   return (
@@ -32,7 +32,7 @@ export function NavigationBar({ calendarHref }: NavigationBarProps) {
         const isActive =
           item.label === "Calendário"
             ? pathname.startsWith("/workout-plans/")
-            : item.href !== "#" && pathname === item.href;
+            : item.href !== "#" && pathname.startsWith(item.href) && (item.href !== "/" || pathname === "/");
 
         if (item.highlighted) {
           return (
