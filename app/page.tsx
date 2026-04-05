@@ -7,6 +7,7 @@ import { getHome } from "@/app/_lib/api/fetch-generated";
 import { NavigationBar } from "@/components/navigation-bar";
 import { ConsistencyTracker } from "@/components/consistency-tracker";
 import { WorkoutDayCard } from "@/components/workout-day-card";
+import { RestDayCard } from "@/components/rest-day-card";
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -19,9 +20,9 @@ export default async function Home() {
 
   const homeData = await getHome(dayjs().format("YYYY-MM-DD"));
 
-  if (homeData.status !== 200) redirect("/auth");
-
-  const { todayWorkoutDay, consistencyByDay, workoutStreak } = homeData.data;
+  const todayWorkoutDay = homeData.status === 200 ? homeData.data.todayWorkoutDay : undefined;
+  const consistencyByDay = homeData.status === 200 ? homeData.data.consistencyByDay : {};
+  const workoutStreak = homeData.status === 200 ? homeData.data.workoutStreak : 0;
   const firstName = session.data.user.name?.split(" ")[0] ?? "";
 
   return (
@@ -80,13 +81,17 @@ export default async function Home() {
           </span>
         </div>
 
-        {todayWorkoutDay && <WorkoutDayCard workoutDay={todayWorkoutDay} />}
+        {todayWorkoutDay && todayWorkoutDay.isRest ? (
+          <RestDayCard weekDay={todayWorkoutDay.weekDay} />
+        ) : todayWorkoutDay ? (
+          <WorkoutDayCard workoutDay={todayWorkoutDay} />
+        ) : null}
       </div>
 
       <NavigationBar
         calendarHref={
-          homeData.status === 200 && homeData.data.activeWorkoutPlanId
-            ? `/workout-plans/${homeData.data.activeWorkoutPlanId}`
+          todayWorkoutDay
+            ? `/workout-plans/${todayWorkoutDay.workoutPlanId}`
             : null
         }
       />

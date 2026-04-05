@@ -1,4 +1,7 @@
+"use client";
+
 import { CircleHelp, Zap } from "lucide-react";
+import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
 import { Button } from "@/components/ui/button";
 import type { GetWorkoutDay200ExercisesItem } from "@/app/_lib/api/fetch-generated";
 
@@ -7,6 +10,18 @@ interface ExerciseCardProps {
 }
 
 export function ExerciseCard({ exercise }: ExerciseCardProps) {
+  const [, setChatState] = useQueryStates({
+    chat_open: parseAsBoolean.withDefault(false),
+    chat_initial_message: parseAsString.withDefault(""),
+  });
+
+  const handleOpenChat = () => {
+    setChatState({
+      chat_open: true,
+      chat_initial_message: `Como executar o exercício ${exercise.name} corretamente?`,
+    });
+  };
+
   return (
     <div className="flex flex-col justify-center gap-3 rounded-xl border border-border p-4">
       <div className="flex items-center justify-between">
@@ -17,6 +32,7 @@ export function ExerciseCard({ exercise }: ExerciseCardProps) {
           variant="ghost"
           size="icon-xs"
           className="size-5 p-0 text-muted-foreground hover:text-foreground"
+          onClick={handleOpenChat}
         >
           <CircleHelp className="size-5" />
         </Button>
