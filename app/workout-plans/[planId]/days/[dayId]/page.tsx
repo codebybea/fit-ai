@@ -1,13 +1,14 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import Image from "next/image";
-import { Calendar, Timer, Dumbbell, Zap, CircleHelp } from "lucide-react";
+import { Calendar, Timer, Dumbbell } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
 import { getWorkoutDay } from "@/app/_lib/api/fetch-generated";
 import { NavigationBar } from "@/components/navigation-bar";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "./_components/back-button";
 import { CompleteWorkoutButton } from "./_components/complete-workout-button";
+import { ExerciseCard } from "./_components/exercise-card";
 import { StartWorkoutButton } from "./_components/start-workout-button";
 
 const WEEK_DAY_LABELS: Record<string, string> = {
@@ -130,41 +131,7 @@ export default async function WorkoutDayPage({
           {workoutDay.exercises
             .sort((a, b) => a.order - b.order)
             .map((exercise) => (
-              <div
-                key={exercise.id}
-                className="flex flex-col justify-center gap-3 rounded-xl border border-border p-4"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-heading text-base font-semibold leading-[1.4] text-foreground">
-                    {exercise.name}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    className="size-5 p-0 text-muted-foreground hover:text-foreground"
-                  >
-                    <CircleHelp className="size-5" />
-                  </Button>
-                </div>
-                <div className="flex gap-1.5">
-                  <div className="flex items-center rounded-full bg-secondary px-2.5 py-1.5">
-                    <span className="font-heading text-xs font-semibold uppercase leading-none text-muted-foreground">
-                      {exercise.sets} séries
-                    </span>
-                  </div>
-                  <div className="flex items-center rounded-full bg-secondary px-2.5 py-1.5">
-                    <span className="font-heading text-xs font-semibold uppercase leading-none text-muted-foreground">
-                      {exercise.reps} reps
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1.5">
-                    <Zap className="size-3.5 text-muted-foreground" />
-                    <span className="font-heading text-xs font-semibold uppercase leading-none text-muted-foreground">
-                      {exercise.restTimeInSeconds}s
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <ExerciseCard key={exercise.id} exercise={exercise} />
             ))}
         </div>
 
