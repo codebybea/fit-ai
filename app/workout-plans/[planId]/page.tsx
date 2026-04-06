@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Goal } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
 import { getWorkoutPlan } from "@/app/_lib/api/fetch-generated";
+import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { PlanDayCard } from "./_components/plan-day-card";
 
@@ -21,6 +22,8 @@ export default async function WorkoutPlanPage({
   });
 
   if (!session.data?.user) redirect("/auth");
+
+  await requireOnboarded();
 
   const { planId } = await params;
   const workoutPlan = await getWorkoutPlan(planId);

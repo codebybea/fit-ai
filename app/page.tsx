@@ -4,6 +4,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import { authClient } from "@/app/_lib/auth-client";
 import { getHome } from "@/app/_lib/api/fetch-generated";
+import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { ConsistencyTracker } from "@/components/consistency-tracker";
 import { WorkoutDayCard } from "@/components/workout-day-card";
@@ -17,6 +18,8 @@ export default async function Home() {
   });
 
   if (!session.data?.user) redirect("/auth");
+
+  await requireOnboarded();
 
   const homeData = await getHome(dayjs().format("YYYY-MM-DD"));
 

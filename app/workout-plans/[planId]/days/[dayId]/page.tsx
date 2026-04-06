@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Calendar, Timer, Dumbbell } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
 import { getWorkoutDay } from "@/app/_lib/api/fetch-generated";
+import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "./_components/back-button";
@@ -38,6 +39,8 @@ export default async function WorkoutDayPage({
   });
 
   if (!session.data?.user) redirect("/auth");
+
+  await requireOnboarded();
 
   const { planId: workoutPlanId, dayId: workoutDayId } = await params;
 

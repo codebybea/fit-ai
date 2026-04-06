@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { CircleCheck, CirclePercent, Hourglass } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
 import { getStats } from "@/app/_lib/api/fetch-generated";
+import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { StreakBanner } from "./_components/streak-banner";
 import { ConsistencyHeatmap } from "./_components/consistency-heatmap";
@@ -18,6 +19,8 @@ export default async function StatsPage() {
   });
 
   if (!session.data?.user) redirect("/auth");
+
+  await requireOnboarded();
 
   const today = dayjs();
   const from = today.subtract(2, "month").startOf("month").format("YYYY-MM-DD");

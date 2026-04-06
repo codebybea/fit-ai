@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { Weight, Ruler, BicepsFlexed, User } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
 import { getUserTrainData } from "@/app/_lib/api/fetch-generated";
+import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { StatCard } from "@/app/stats/_components/stat-card";
 import { UserHeader } from "./_components/user-header";
@@ -16,6 +17,8 @@ export default async function ProfilePage() {
   });
 
   if (!session.data?.user) redirect("/auth");
+
+  await requireOnboarded();
 
   const trainData = await getUserTrainData();
 
