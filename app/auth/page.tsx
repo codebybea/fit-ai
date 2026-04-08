@@ -9,8 +9,7 @@ export default function AuthPage() {
   const { data: session, isPending } = authClient.useSession();
 
   if (isPending) return null;
-  if (session) redirect("/");
-
+  if (session?.user) redirect("/");
   const handleGoogleLogin = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
@@ -18,7 +17,7 @@ export default function AuthPage() {
     });
 
     if (error) {
-      console.error(error.message); 
+      console.error(error.message);
     }
   };
 
