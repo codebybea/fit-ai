@@ -34,7 +34,7 @@ export function Chat({ initialMessages, autoSendMessage, headerAction }: ChatPro
 
   const { messages, sendMessage, status } = useChat({
     transport,
-    initialMessages,
+    messages: initialMessages ?? [],
   });
 
   const form = useForm<z.infer<typeof messageSchema>>({
