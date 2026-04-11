@@ -11,6 +11,7 @@ import { Sparkles, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { ChatMessage } from "@/components/chat-message";
+import { TypingIndicator } from "@/components/typing-indicator";
 
 const messageSchema = z.object({
   message: z.string().min(1),
@@ -45,6 +46,8 @@ export function Chat({ initialMessages, autoSendMessage, headerAction }: ChatPro
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasSentInitial = useRef(false);
   const isStreaming = status === "streaming" || status === "submitted";
+  const lastMessage = messages[messages.length - 1];
+  const showTypingIndicator = isStreaming && (!lastMessage || lastMessage.role === "user");
 
   useEffect(() => {
     if (autoSendMessage && !hasSentInitial.current) {
@@ -97,6 +100,7 @@ export function Chat({ initialMessages, autoSendMessage, headerAction }: ChatPro
             }
           />
         ))}
+          {showTypingIndicator && <TypingIndicator />}
         <div ref={messagesEndRef} />
       </div>
 

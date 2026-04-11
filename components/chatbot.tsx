@@ -11,6 +11,7 @@ import { Sparkles, X, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { ChatMessage } from "@/components/chat-message";
+import { TypingIndicator } from "@/components/typing-indicator";
 
 const messageSchema = z.object({
   message: z.string().min(1),
@@ -43,6 +44,8 @@ export function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sentInitialRef = useRef<string | null>(null);
   const isStreaming = status === "streaming" || status === "submitted";
+  const lastMessage = messages[messages.length - 1];
+  const showTypingIndicator = isStreaming && (!lastMessage || lastMessage.role === "user");
 
   useEffect(() => {
     if (!chat_open || !chat_initial_message) return;
@@ -113,6 +116,7 @@ export function Chatbot() {
               }
             />
           ))}
+          {showTypingIndicator && <TypingIndicator />}
           <div ref={messagesEndRef} />
         </div>
 

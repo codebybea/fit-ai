@@ -18,7 +18,7 @@ export function ChatMessage({ message, isStreaming }: ChatMessageProps) {
 
   if (isUser) {
     return (
-      <div className="flex justify-end pl-[60px] pr-5 pt-5">
+      <div className="flex justify-end pl-[60px] pr-5 pt-5 animate-in fade-in slide-in-from-right-4 duration-300">
         <div className="rounded-xl bg-primary p-3">
           <p className="font-heading text-sm leading-[1.4] text-primary-foreground">
             {text}
@@ -29,7 +29,7 @@ export function ChatMessage({ message, isStreaming }: ChatMessageProps) {
   }
 
   return (
-    <div className="flex justify-start pl-5 pr-[60px] pt-5">
+    <div className="flex justify-start pl-5 pr-[60px] pt-5 animate-in fade-in slide-in-from-left-4 duration-300">
       <div className="rounded-xl bg-secondary p-3">
         <div className="font-heading text-sm leading-[1.4] text-foreground">
           <Streamdown mode={isStreaming ? "streaming" : "static"}>
