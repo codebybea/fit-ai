@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import dayjs from "dayjs";
 import { Weight, Ruler, BicepsFlexed, User } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
-import { getUserTrainData } from "@/app/_lib/api/fetch-generated";
+import { getUserTrainData, getHome } from "@/app/_lib/api/fetch-generated";
 import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { StatCard } from "@/app/stats/_components/stat-card";
@@ -20,10 +21,14 @@ export default async function ProfilePage() {
 
   await requireOnboarded();
 
-  const trainData = await getUserTrainData();
+  const [trainData, homeData] = await Promise.all([
+    getUserTrainData(),
+    getHome(dayjs().format("YYYY-MM-DD")),
+  ]);
 
   const user = session.data.user;
   const data = trainData.status === 200 ? trainData.data : null;
+  const todayWorkoutDay = homeData.status === 200 ? homeData.data.todayWorkoutDay : undefined;
 
   const weightKg = data ? (data.weightInGrams / 1000).toFixed(1) : "-";
   const heightCm = data ? String(data.heightInCentimeters) : "-";
@@ -56,7 +61,13 @@ export default async function ProfilePage() {
         <LogoutButton />
       </div>
 
-      <NavigationBar />
+      <NavigationBar
+        calendarHref={
+          todayWorkoutDay
+            ? `/workout-plans/${todayWorkoutDay.workoutPlanId}`
+            : null
+        }
+      />
     </div>
   );
 }

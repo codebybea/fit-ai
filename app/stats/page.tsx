@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import dayjs from "dayjs";
 import { CircleCheck, CirclePercent, Hourglass } from "lucide-react";
 import { authClient } from "@/app/_lib/auth-client";
-import { getStats } from "@/app/_lib/api/fetch-generated";
+import { getStats, getHome } from "@/app/_lib/api/fetch-generated";
 import { requireOnboarded } from "@/app/_lib/require-onboarded";
 import { NavigationBar } from "@/components/navigation-bar";
 import { StreakBanner } from "./_components/streak-banner";
@@ -26,8 +26,12 @@ export default async function StatsPage() {
   const from = today.subtract(2, "month").startOf("month").format("YYYY-MM-DD");
   const to = today.endOf("month").format("YYYY-MM-DD");
 
-  const statsData = await getStats({ from, to });
+  const [statsData, homeData] = await Promise.all([
+    getStats({ from, to }),
+    getHome(today.format("YYYY-MM-DD")),
+  ]);
 
+  const todayWorkoutDay = homeData.status === 200 ? homeData.data.todayWorkoutDay : undefined;
   const workoutStreak = statsData.status === 200 ? statsData.data.workoutStreak : 0;
   const consistencyByDay = statsData.status === 200 ? statsData.data.consistencyByDay : {};
   const completedWorkoutsCount = statsData.status === 200 ? statsData.data.completedWorkoutsCount : 0;
@@ -75,7 +79,13 @@ export default async function StatsPage() {
         />
       </div>
 
-      <NavigationBar />
+      <NavigationBar
+        calendarHref={
+          todayWorkoutDay
+            ? `/workout-plans/${todayWorkoutDay.workoutPlanId}`
+            : null
+        }
+      />
     </div>
   );
 }
