@@ -28,13 +28,23 @@ export default function AuthPage() {
           src="/login-bg.png"
           alt=""
           fill
-          className="object-cover"
           priority
+          sizes="100vw"
+          quality={95}
+          className="object-cover object-[43%_20%] sm:object-center"
         />
       </div>
 
       <div className="relative z-10 flex justify-center pt-12">
-        <Image src="/fit-ai-logo.svg" alt="FIT.AI" width={85} height={38} />
+        <Image
+          src="/fit-ai-logo.svg"
+          alt="FIT.AI"
+          width={85}
+          height={38}
+          priority
+          loading="eager"
+          className="h-[38px] w-[85px] object-contain"
+        />
       </div>
 
       <div className="flex-1" />
@@ -54,7 +64,7 @@ export default function AuthPage() {
               alt=""
               width={16}
               height={16}
-              className="shrink-0"
+              className="size-4 shrink-0 object-contain"
             />
             Fazer login com Google
           </Button>

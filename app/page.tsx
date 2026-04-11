@@ -23,9 +23,12 @@ export default async function Home() {
 
   const homeData = await getHome(dayjs().format("YYYY-MM-DD"));
 
-  const todayWorkoutDay = homeData.status === 200 ? homeData.data.todayWorkoutDay : undefined;
-  const consistencyByDay = homeData.status === 200 ? homeData.data.consistencyByDay : {};
-  const workoutStreak = homeData.status === 200 ? homeData.data.workoutStreak : 0;
+  const todayWorkoutDay =
+    homeData.status === 200 ? homeData.data.todayWorkoutDay : undefined;
+  const consistencyByDay =
+    homeData.status === 200 ? homeData.data.consistencyByDay : {};
+  const workoutStreak =
+    homeData.status === 200 ? homeData.data.workoutStreak : 0;
   const firstName = session.data.user.name?.split(" ")[0] ?? "";
 
   return (
@@ -36,8 +39,10 @@ export default async function Home() {
             src="/home-banner.jpg"
             alt=""
             fill
-            className="object-cover"
             priority
+            sizes="(max-width: 768px) 200vw, 100vw"
+            quality={95}
+            className="object-cover object-center"
           />
           <div
             className="absolute inset-0"
