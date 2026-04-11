@@ -12,4 +12,6 @@ export async function completeWorkoutAction(
     completedAt: new Date().toISOString(),
   });
   revalidatePath(`/workout-plans/${workoutPlanId}/days/${workoutDayId}`);
+  revalidatePath("/");
+  revalidatePath("/stats");
 }
